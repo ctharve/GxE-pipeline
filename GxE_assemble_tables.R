@@ -87,11 +87,8 @@ save(data_cov_svd, file='data_cov_svd.Rd')
 load('data_cov_svd.Rd')
 load('all_data.Rd')
 n.samples <- length(data_cov_svd$d)
-data_cov_svd$d[1]/sum(data_cov_svd$d) ## .4675
-data_cov_svd$d[2]/sum(data_cov_svd$d) ## .1966
-
-percent_var <- data_cov_svd$d
-
+(data_cov_svd$d[1]^2)/sum(data_cov_svd$d^2) ## .4675
+(data_cov_svd$d[2]^2)/sum(data_cov_svd$d^2) ## .1966
 
 group_labels <- c(
     sapply(plates, function(this_plate){
@@ -112,13 +109,51 @@ bc <- sapply(1:n.samples, function(ii){
     temp[[1]][2]
 })
 
-cell_lines <- c(rep('LCL', 96), rep('PBMC.1', 96), rep('HUVEC.1', 96), rep('PBMC.2', 96), rep('LCL', 96), rep('HUVEC.2', 96), rep('SMC', 96), rep('Melanocytes', 96), rep('Melanocytes', 96))
+cell_lines <- c(rep('LCL.P1', 96), rep('PBMC.P2', 96), rep('HUVEC.P4', 96), rep('PBMC.P5', 96), rep('LCL.P7', 96), rep('HUVEC.P8', 96), rep('SMC.P10', 96), rep('Melanocytes.P11', 96), rep('Melanocytes.P12', 96))
 
-plot_dat <- data.frame(IDS=group_labels, Plate=plate, Lines=cell_lines, PC1=data_cov_svd$v[, 1], PC2=data_cov_svd$v[, 2])
+initial_dat <- data.frame(IDS=group_labels, Plate=plate, Lines=cell_lines, PC1=data_cov_svd$v[, 1], PC2=data_cov_svd$v[, 2], stringsAsFactors=FALSE)
 
-pdf('PCA_cellLines.pdf')
+## extract the treatment names from the covariates file. 
+treatments_full <- c(sapply(plates, function(this_plate){
+    #this_plate <- plates[1]
+
+    barcodes <- as.integer(
+                    gsub(paste(this_plate, '-HT', sep=''), '', initial_dat[initial_dat$Plate==this_plate, 'IDS'])
+                )
+    covs <- read.table(paste('/wsu/home/groups/piquelab/charvey/GxE/derived_data/cvs/GxE_', this_plate, '_covariates.txt', sep=''), header=TRUE, sep='\t', as.is=TRUE)
+    t(covs[, c('Treatment.ID')])
+
+}))
+
+treats_split <- strsplit(treatments_full, 'C')
+aux <- sapply(treats_split, function(this_treat){
+    cat(this_treat)
+})
+
+n.treats <- length(treats_split)
+treat_con <- cbind(rep(NA, n.treats), rep(NA, n.treats))
+colnames(treat_con) <- c('treatment', 'concentration')
+
+for(ii in 1:n.treats){
+    #ii <- 1
+    temp_treat <- treats_split[[ii]][1]
+    temp_control <- treats_split[[ii]][2]
+    if(nchar(temp_treat)==0){
+        treat_con[ii, 'treatment'] <- paste('C', temp_control, sep='')
+        treat_con[ii, 'concentration'] <- NA
+    }else{
+        treat_con[ii, 'treatment'] <- temp_treat
+        treat_con[ii, 'concentration'] <- temp_control
+    }
+}
+
+
+plot_dat <- data.frame(treatments_full, treat_con, initial_dat, stringsAsFactors=FALSE)
+
+
+pdf('PCA_cellLines_annotated.pdf', width=15, height=15)
 my_plot <- ggplot(plot_dat, aes(x=PC1, y=PC2)) + geom_point(aes(color=Lines)) + ggtitle('Cell Line Specific PCA')
-my_plot
+my_plot + geom_text(aes(label=treatment, color=Lines))
 dev.off()
 
 pdf('PCA_plates.pdf')
