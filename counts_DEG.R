@@ -7,9 +7,9 @@
 ###########################################################################################
 require(parallel)
 
-#platePrefix <- "P1"
-#cores <- 16
-#dataFolder <- "../bams"
+#cores <- 2
+#platePrefix <- "DP5"
+#dataFolder <- "../../bams"
 
 cargs <- commandArgs(trail=TRUE)
 if(length(cargs)>=1)
@@ -30,7 +30,7 @@ anno <- anno[,-c(9:12)]
 colnames(anno) <-  c("chr","start","stop","t.id","score","strand","c.start","c.stop","ensg","g.id")
 
 ## get the barcodes
-barcodes <- as.integer(scan(pipe(paste('ls ../fastqs/', platePrefix, '-HT* | sed s/_S.*//g | sed s/.*', platePrefix, '-HT//g | sort | uniq', sep='')), character(0)))
+barcodes <- as.integer(scan(pipe(paste('ls ../../fastqs/', platePrefix, '-HT* | sed s/_L.*//g | sed s/.*', platePrefix, '-HT//g | sort | uniq', sep='')), character(0)))
 
 barcodes <- sort(barcodes)
 

@@ -4,10 +4,10 @@
 ## Assemble a Complete matrix of GxE data
 ##
 ##################################################################
-require(parallel)
+ require(parallel)
 require(ggplot2)
 cores <- as.integer(Sys.getenv("NCPUS"))
-if(cores<1){cores <- 1}
+if(cores<1 || is.na(cores)){cores <- 1}
 ## need to get this working for lapply
 ParallelSapply <- function(...,mc.cores=cores){
   simplify2array(mclapply(...,mc.cores=mc.cores))
@@ -50,7 +50,8 @@ all_data$anno <- NULL
 
 ## row normalize all data
 data_centered <- invisible(
-                lapply(plates, function(ii){       ## across all samples within 
+
+lapply(plates, function(ii){       ## across all samples within 
                     #ii <- plates[1]  
                     cat(paste('Row centering Plate: ', ii, sep=''))
                     cat('\n')
@@ -67,8 +68,44 @@ data_centered$anno <- NULL
 load('all_data_centered.Rd')
 load('all_data.Rd')
 annotations <- data_centered$anno
-all_data$anno <- NULL
+#all_data$anno <- NULL
 data_centered$anno <- NULL
+potatoes <- do.call(cbind, data_centered)
+
+cvs.directory <- '/wsu/home/fl/fl97/fl9788/piquelab/charvey/GxE/derived_data/cvs'
+
+idx_keep <- sapply(plates, function(plate){
+                                        #plate <- plates[1]
+                                        table <- paste('../../cvs/', 'GxE_', plate, '_covariates.txt', sep='')
+                                        fields <- read.table(table, as.is=TRUE, header=TRUE, sep='\t')
+                                        treatment <- fields[, c('Treatment.ID')]
+                                        keep <- treatment %in% c('CO1', 'CO2', 'CO3') 
+})
+
+####################################################################
+## Normalize the data to transcript length ##
+## Annotating trnascript lenght in bp and GC content.  
+gcContentFile <- "/wsu/home/groups/piquelab/data/RefTranscriptome/ensGene.hg19.faCount.gz";
+anno2 <- read.table(gcContentFile,as.is=T,sep="\t",header=T,comment="")
+anno2 <- anno2[-191892, ]
+rownames(anno2) <- gsub("hg19_ensGene_","",anno2$X.seq)
+colnames(anno2) <- c('t.id', 'len', 'A', 'C', 'G', 'T', 'N', 'cpg', 'avg.cg')
+anno2$avg.cg <- (anno2$C+anno2$G)/anno2$len
+## coding length             
+anno2$codLen <- anno2[,"len"]
+
+## combine raw data into a single matrix
+full_matrix <- do.call(cbind, data_centered[1:9])   ## remove annotations; hence [1:9]
+sample_sums <- colSums(full_matrix)/1E6
+
+full_normal <- sapply(1:ncol(full_matrix),function(jj){
+    full_matrix[,jj]/sample_sums[jj]*1000/anno2$codLen
+    })
+## d2 has now reads per kb of transcript, you can divide additional by the total number of reads mapped in millions and you will have rpkm, 
+## but I don't do it because the I column normalize which makes dividing by a constant kind of useless.
+full_cov_norm <- t(full_normal) %*% full_normal
+full_norm_svd <- svd(full_cov_norm)
+save(full_norm_svd, file='data_cov_normalized_svd.Rd')
 
 ####
 potatoes <- do.call(cbind, data_centered)
@@ -87,9 +124,10 @@ save(data_cov_svd, file='data_cov_svd.Rd')
 load('data_cov_svd.Rd')
 load('all_data.Rd')
 n.samples <- length(data_cov_svd$d)
-(data_cov_svd$d[1]^2)/sum(data_cov_svd$d^2) ## .4675
-(data_cov_svd$d[2]^2)/sum(data_cov_svd$d^2) ## .1966
+(data_cov_svd$d[1]^2)/sum(data_cov_svd$d^2) ## .4675 and squared 0.8154672
+(data_cov_svd$d[2]^2)/sum(data_cov_svd$d^2) ## .1966 and squared 0.1443409
 
+## extract group labels from 
 group_labels <- c(
     sapply(plates, function(this_plate){
         colnames(all_data[[this_plate]])
@@ -140,7 +178,8 @@ for(ii in 1:n.treats){
     temp_control <- treats_split[[ii]][2]
     if(nchar(temp_treat)==0){
         treat_con[ii, 'treatment'] <- paste('C', temp_control, sep='')
-        treat_con[ii, 'concentration'] <- NA
+        treat_con[ii, 'concentration'] <- NAll
+
     }else{
         treat_con[ii, 'treatment'] <- temp_treat
         treat_con[ii, 'concentration'] <- temp_control

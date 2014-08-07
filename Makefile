@@ -4,15 +4,13 @@
 genomeindex=/wsu/home/groups/piquelab/data/RefGenome/hg19.fa.gz
 fastqs=../fastqs
 sortedBams=$(shell find ./ -name '*sorted.bam' | sed 's/_[SL].*\.bam//g' | sort | uniq)
-Qsub.ppn=16
-Qsub.q=masxq
+Qsub.ppn=2
+Qsub.q=mmtxq
 Qsub.N=bams
 
 
 all: 
 	echo $(sortedBams)
-
-.SECONDARY:
 
 %.Qsub:
 	touch $@
@@ -32,15 +30,19 @@ all_clean: $(patsubst %, %_clean.bam.Qsub,$(sortedBams))
 %_merged.bam: %_[SL]*_sorted.bam 
 	samtools merge $@ $^
 	samtools index $@
+	samtools view -c $@ > $*_merged_count.txt
 
 %_quality.bam: %_merged.bam		
 	samtools view -b1 -q10 $^ > $@
 	samtools index $@
+	samtools view -c $@ > $*_quality_count.txt
 
 %_clean.bam: %_quality.bam
-	samtools view -b -q10 $^ | samtools rmdup - $@
+	samtools view -b -q10 $^ | samtools.old rmdup - $@
 	samtools index $@
-
+	samtools view -c $@ > $*_clean_count.txt
 clean:
+	rm *sorted*
 	rm *merged*
 	rm *quality*
+	rm *clean*
