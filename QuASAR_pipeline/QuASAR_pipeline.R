@@ -23,18 +23,19 @@ source(paste(LPG, '/charvey/GxE/jointGenotyping/scripts/aseSuite_functions_v0.0.
 source(paste(LPG, '/charvey/source/ASE/fitAseModels.v4.R', sep=''))
 ## qqplot functions
 source(paste(LPG, '/gmb/AI/results/qqman.r', sep=''))
+
 ##################################################################
 #library('ggplot2', lib.loc=myRlib)
 library('ggplot2')
 require(qvalue)
+##x11(display="localhost:12.0" ,type="Xlib")
 
-##x11(display="localhost:10.0" ,type="Xlib")
 ##################################################################
 ## use the covariate table and use the barcodes to select samples
 ##################################################################    
-#plate <- "DP5" 
-## Plate D1P6 cell lines KP39334 KP39346 KP39351
-#cell.line <- "KP39334"
+#plate <- "DP1" 
+## Plate DP1 cell lines 18507 18508 19239
+#cell.line <- "18507"
 cargs <- commandArgs(trail=TRUE);
 if(length(cargs)>=1)
   plate <- cargs[1]
@@ -47,6 +48,7 @@ system('mkdir -p output')
 system('mkdir -p plots/QQ')
 system('mkdir -p plots/QC/oraf')
 system('mkdir -p plots/QC/manhattan')
+
 ##################################################################
 ## specify covariate file and pileup directories
 ##################################################################    
@@ -64,6 +66,7 @@ treatments <- cov.file$Treatment
 n.treatments <- length(treatments)
 treatment.IDs <- cov.file$Treatment.ID
 controls <- unique(cov.file$Control.ID)
+
 ##################################################################    
 ## prepare the relevant samples
 ##################################################################    
@@ -77,6 +80,7 @@ str(ase.dat.gt)
 tempchr <- ase.dat.gt$annotations[which(ase.dat.gt$annotations$rsID=='.'), 'chr']
 temppos <- ase.dat.gt$annotations[which(ase.dat.gt$annotations$rsID=='.'), 'pos']
 ase.dat.gt$annotations[which(ase.dat.gt$annotations$rsID=='.'), 'rsID'] <- paste(tempchr, temppos, sep='-')
+
 ##################################################################    
 ## QC
 ##################################################################    
@@ -90,14 +94,15 @@ if(TRUE){
 		oraf <- oraf[ind]
 		aux <- data.frame(oraf=oraf)
 
-		png.file <- paste('./plots/QC/oraf/', plate, '_', cell.line, '_', treatment.IDs[ii], '_',  ii, '_QC_oraf.png', sep='')	
-		png(file=png.file)
+		pdf.file <- paste('./plots/QC/oraf/', plate, '_', cell.line, '_', treatment.IDs[ii], '_',  ii, '_QC_oraf.pdf', sep='')	
+		pdf(file=pdf.file)
 			#hist(oraf, breaks=100)
 			qc_plot <- ggplot(aux, aes(x=oraf))
 			print(qc_plot + geom_histogram(binwidth=0.01) + ggtitle(paste(plate, '_', cell.line, '_', treatments[ii], sep=''))) + theme_bw()
 		dev.off()
 	}
 }
+
 ########################################################################
 ##chrCol <- rainbow(length(chrList))
 chrList <- paste("chr",sort(as.numeric(gsub("chr","",unique(ase.dat$anno$chr)))),sep="")
@@ -113,8 +118,8 @@ for(ii in (1:n.treatments)){
 
 	chrCol <- rep(c("orange","darkblue"),length(chrList))[1:length(chrList)]
 	names(chrCol) <- chrList
-	png.file <- paste('./plots/QC/manhattan/', plate, '_', cell.line, '_', sName, '_',  ii, '_QC_manhattan.png', sep='')	
-	png(file=png.file,width=800,height=400)
+	pdf.file <- paste('./plots/QC/manhattan/', plate, '_', cell.line, '_', sName, '_',  ii, '_QC_manhattan.pdf', sep='')	
+	pdf(file=pdf.file,width=800,height=400)
 	layout(t(c(1,1,1,2)))
 	par(cex=1.0)
 	oldmar <- par("mar")
@@ -140,6 +145,7 @@ for(ii in (1:n.treatments)){
 	par(mar=oldmar)
 	dev.off()
 }
+
 ##################################################################
 ## Collapse the controls
 ##################################################################
@@ -153,6 +159,7 @@ treatments_collapsed <- c(unique(unlist(subset(cov.file, Treatment.ID %in% contr
 treatmentIDs_final <- c(controls, treatment.IDs[treat.ind])
 colnames(finalref) <- treatments_collapsed
 colnames(finalalt) <- treatments_collapsed
+
 ################################################################## 
 ## QuASAR Model Fitting
 ## ase.joint ~ object for joint genotyoping across all samples
@@ -166,6 +173,7 @@ n.eps <- length(ase.joint.eps)
 sample.names <- treatments_collapsed
 treatments.final <- treatments_collapsed
 ase.dat.final <- list(ref=finalref, alt=finalalt, gmat=ase.dat.gt$gmat, annotations=ase.dat.gt$annotations)
+
 ################################################################## 
 ## Output model data; genotypes, etc. 
 ## ase.joint ~ object for joint genotyoping across all samples
@@ -180,6 +188,7 @@ for(ii in 1:length(treatments)){
 	dat.name <- paste(output.folder, "/",plate, "_",cell.line, '_', this.treat, '_readCounts.txt', sep='')
 	write.table(out.counts, file=dat.name, row.names=FALSE, col.names=TRUE, quote=FALSE, sep="\t")
 }
+
 ##################################################################
 ## inference 
 ##################################################################        
@@ -355,8 +364,7 @@ inference.data <- lapply(seq_along(1:n.eps), function(ii){
                         #this.pi0 <- qv2$pi0
                         #betas.se <- abs(betas.beta.binom/qnorm(pval2[het.ind]/2))
 			#betas.se[which(betas.se=='NaN')] <- aux2[, 2][which(betas.se=='NaN')]
-			
-                        
+			                        
 			#100-qv2$pi0*100
 			cat("==========LLRT considering uncertain GT with [Q<", q.thresh, "]: ", sum(qv2$qv<q.thresh), "==========\n\n", sep="")		
 			
@@ -364,31 +372,69 @@ inference.data <- lapply(seq_along(1:n.eps), function(ii){
 			## return data frame
 			rsID <- annotations
 			betas <- betas.beta.binom
-			temp <- list(dat=data.frame(annotations$rsID, annotations$chr, annotations$pos0, betas, betas.se, qv=qvals.qv3, pval=pval3), meta.dat=c(numb.hets, this.pi0, qv.05, qv.1, qv.2, qv.5))
-			#temp <- data.frame(sig.SNPs=annotations[which(qvals.qv3<0.2)])
+                        dat <- data.frame(annotations$rsID, annotations$chr, annotations$pos0, rho=rho3, betas, betas.se, qv=qvals.qv3, pval=pval3, refCount=ref[het.ind], altCount=alt[het.ind])
+                        meta.dat <- data.frame(hets=numb.hets, pi0=this.pi0, qv.05=qv.05, qv.1=qv.1, qv.2=qv.2, qv.5=qv.5, mean.rho=mean(rho3), median.rho=median(rho3), dispersion=Dmax2)
+			temp <- list(dat=dat, meta.dat=meta.dat)
                         
-		}) ## Returns a list of data & metaData
+}) ## Returns a list of data & metaData
 
 names(inference.data) <- treatmentIDs_final
 dat.name <- paste(output.folder, "/",plate, "_",cell.line, "_cov", min.cov, '_inference.RData', sep='')
 save(inference.data, file=dat.name)
+str(inference.data)
+#load(dat.name)
+
+##########################################
+## 0.) plots for average rho aross the individual 
+##########################################
+all_rho_hat <- Reduce(c, sapply(seq_along(1:length(inference.data)), FUN=function(ii){inference.data[[ii]]$dat$rho}))
+mean_rho_hat <- round(mean(all_rho_hat), 4)
+median_rho_hat <- round(median(all_rho_hat), 4)
+se_rho_hat <- sd(all_rho_hat)
+
+all_ref <- Reduce(c, sapply(seq_along(1:length(inference.data)), FUN=function(ii){inference.data[[ii]]$dat$refCount}))
+all_alt <- Reduce(c, sapply(seq_along(1:length(inference.data)), FUN=function(ii){inference.data[[ii]]$dat$altCount}))
+all_coverage <- '+'(all_ref, all_alt)
+emp_rho <- '*'(all_ref, all_coverage^(-1))
+
+rho_title <- paste0(plate, '-', cell.line, ' : Rho_hat across all treatements', '\n mean.Rho=', mean_rho_hat, ' | median.Rho=', median_rho_hat)
+pdf.file <- paste('./plots/QC/', plate, '_', cell.line, '_averageRho', '.pdf', sep='')
+pdf(file=pdf.file)
+hist(all_rho_hat[all_coverage>100], breaks=80, main=rho_title, axes=FALSE)
+abline(v=mean_rho_hat, lty=2, col='red')
+axis(1, at=seq(0, 1, .1)); axis(2)
+dev.off()
 
 ##########################################
 ## 1.) QQ-plots for all treatments
 ##########################################
 for(ii in seq_along(1:length(inference.data))){
+        #ii <- 1
         treatment <- names(inference.data)[ii]
 	pvals <- inference.data[[ii]]$dat$pval
-	pi0 <- round(inference.data[[ii]]$meta.dat[2], 2)
-	hets <- inference.data[[ii]]$meta.dat[1]
-	qv.2 <- inference.data[[ii]]$meta.dat[5]
-	png.file <- paste('./plots/QQ/', plate, '_', cell.line, '_', treatment, "_cov", min.cov, '_', ii, '_QQ', '.png', sep='')
-	png(file=png.file)
-		qq(pvals)
-		title <- paste(cell.line, " | ", treatments_collapsed[ii], ' | Pi0=', pi0, ' | #hets=', hets, ' | #qv.2=', qv.2, sep='')
-		title(main=title)
-	dev.off()
+	pi0 <- round(inference.data[[ii]]$meta.dat$pi0, 2)
+	hets <- inference.data[[ii]]$meta.dat$hets
+	qv.2 <- inference.data[[ii]]$meta.dat$qv.2
+        coverage <- inference.data[[ii]]$dat$refCount + inference.data[[ii]]$dat$altCount
+	avg.depth <- floor(mean(coverage))
+        disp <- round(mean(inference.data[[ii]]$meta.dat$dispersion), 2)
+
+        ## extract pvalues from only the high coverage loci
+        pval_high <- inference.data[[1]]$dat$pval[which(coverage>100)]
+        qqp <- qqplot(-log10(ppoints(length(pval_high))),-log10(pval_high), plot.it=F)
+         
+        pdf.file <- paste('./plots/QQ/', plate, '_', cell.line, '_', treatment, "_cov", min.cov, '_', ii, '_QQ', '.pdf', sep='')
+        title <- paste(cell.line, " | ", treatments_collapsed[ii], ' | Pi0=', pi0, ' | #hets=', hets, '\n #qv.2=', qv.2, ' | avg.depth=', avg.depth, ' | disp=', disp, sep='')
+       
+        pdf(file=pdf.file)
+	qq(pvals)
+        points(qqp,pch='.',cex=5,col='blue')
+        title(main=title)
+        legend("topleft", c(paste("all hets"), paste("hets with minCov=100")),
+                               fill=c("black","blue"))
+        dev.off()
 }
+
 ##########################################
 ## 2.) Expression table across all treatments
 ##########################################
@@ -402,6 +448,7 @@ colnames(asetable) <- c('Q<.01', 'Q<.05', 'Q<.1', 'Q<.2')
 
 outfile <- paste('./output/', plate, "_",cell.line, '_Qhits.txt', sep='')
 write.table(asetable, file=outfile, row.names=TRUE, col.names=TRUE, quote=FALSE, sep="\t") 
+
 ##########################################
 ## 3.) Prepare data for Mesh
 ##########################################
@@ -431,12 +478,10 @@ for(ii in (length(controls)+1):(length(inference.data))){
 			control <- c(totaldata[ii, 'SNP_ID'], totaldata[ii, 'label.x'], totaldata[ii, 'beta.x'], totaldata[ii, 'SE.x'])
 			treatment <- c(totaldata[ii, 'SNP_ID'], totaldata[ii, 'label.y'], totaldata[ii, 'beta.y'], totaldata[ii, 'SE.y'])
 
-
 			returnval <- rbind(control, treatment)
 			rownames(returnval) <- NULL
 			returnval
 			})
-
 
 		for(ii in 1:length(finaldata)){
 			#ii <- 1
@@ -452,6 +497,7 @@ for(ii in (length(controls)+1):(length(inference.data))){
 		filename <- paste('./mesh/analysis_data/', plate, '_', cell.line, '_', treat, '.txt', sep='')
 		write.table(finallong, file=filename, row.names=FALSE, col.names=FALSE, quote=FALSE, sep="\t") 	
 }
+
 ##
 cat("###### THE END ######")
 ##
