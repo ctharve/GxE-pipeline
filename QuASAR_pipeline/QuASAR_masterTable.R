@@ -65,10 +65,18 @@ out_dat <- Reduce(rbind, lapply(ids, function(id){
   q_dat$logFC <- d_dat[q_dat$t.id, 'logFC']
 
   temp <- Reduce(rbind, lapply(unique(q_dat$rsID), function(this_rsID){
-    ##this_rsID <- "rs2296871"
+    ##this_rsID <- "rs2155248"
     ##cat('\n', this_rsID, '\n')
     temp <- q_dat[which(q_dat$rsID==this_rsID), ]
-    myMax <- max(temp$logFC)
+    temp <- temp[complete.cases(temp), ] ## remove NAs
+    minMax <- min(temp$logFC) 
+    maxMax <- max(temp$logFC)
+    #cat(this_rsID, '\n')
+    if(abs(minMax)>maxMax){
+    	myMax <- minMax 
+    } else{
+    	myMax <- maxMax
+    }	
     keep_ind <- which(temp$logFC==myMax)[1]
     ret_val <- temp[keep_ind,]
     row.names(ret_val) <- NULL
