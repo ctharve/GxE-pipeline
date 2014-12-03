@@ -5,14 +5,36 @@
 ##
 ###########################################################################
 ## capture full treatment names from treatment codes for system treatments
-get_treat <- function(t.code){
+GetTreat <- function(t.code){
   temp <- read.table('/wsu/home/groups/piquelab/charvey/GxE/derived_data/covariates/GxE_treatment_key.new.txt',
                      header=TRUE,
                      stringsAsFactors=FALSE)
   temp[temp$Treatment_ID==t.code, 'Short_Name'] 
 }
 
-## 
+GetCode <- function(short_name){
+  temp <- read.table('/wsu/home/groups/piquelab/charvey/GxE/derived_data/covariates/GxE_treatment_key.new.txt',
+                     header=TRUE,
+                     stringsAsFactors=FALSE)
+  temp[temp$Short_Name==short_name, 'Treatment_ID'] 
+}
+
+##################################################################
+## use the covariate table and use the barcodes to select samples
+##################################################################
+CovData <- function(plate, cell.line, treat, fields='all'){
+  cov.file <- paste('~/piquelab/scratch/charvey/GxE/derived_data/covariates/GxE_', plate, '_covariates.txt', sep='')
+  cv <- read.table(file=cov.file, sep="\t", header=TRUE, stringsAsFactors=FALSE)
+  cv$Treatment <- gsub(' ',  '_', cv$Treatment)
+  if(fields=='all'){
+    cv[cv$Plate.ID==plate & cv$CellLine==cell.line & cv$Treatment.ID==treat, ]
+  } else {
+    cv[cv$Plate.ID==plate & cv$CellLine==cell.line & cv$Treatment.ID==treat, fields]
+  }
+}
+
+##################################################################
+################################################################## 
 get_info <- function(ids){
   info.dat <- Reduce(rbind, lapply(ids, function(id){
     ## id <- betaTreat_dat$id[1]
