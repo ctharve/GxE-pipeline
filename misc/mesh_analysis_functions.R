@@ -4,6 +4,8 @@
 ## helper functions for processing and plotting oputput from William Wen's MESH
 ##
 ###########################################################################
+
+##################################################################
 ## capture full treatment names from treatment codes for system treatments
 GetTreat <- function(t.code){
   temp <- read.table('/wsu/home/groups/piquelab/charvey/GxE/derived_data/covariates/GxE_treatment_key.new.txt',
@@ -12,6 +14,8 @@ GetTreat <- function(t.code){
   temp[temp$Treatment_ID==t.code, 'Short_Name'] 
 }
 
+##################################################################
+##
 GetCode <- function(short_name){
   temp <- read.table('/wsu/home/groups/piquelab/charvey/GxE/derived_data/covariates/GxE_treatment_key.new.txt',
                      header=TRUE,
@@ -21,7 +25,6 @@ GetCode <- function(short_name){
 
 ##################################################################
 ## use the covariate table and use the barcodes to select samples
-##################################################################
 CovData <- function(plate, cell.line, treat, fields='all'){
   cov.file <- paste('~/piquelab/scratch/charvey/GxE/derived_data/covariates/GxE_', plate, '_covariates.txt', sep='')
   cv <- read.table(file=cov.file, sep="\t", header=TRUE, stringsAsFactors=FALSE)
@@ -33,8 +36,8 @@ CovData <- function(plate, cell.line, treat, fields='all'){
   }
 }
 
-##################################################################
 ################################################################## 
+##
 get_info <- function(ids){
   info.dat <- Reduce(rbind, lapply(ids, function(id){
     ## id <- betaTreat_dat$id[1]
@@ -51,6 +54,7 @@ get_info <- function(ids){
   info.dat
 }
 
+##################################################################
 ## Capture posterior samples from MESH models for violin plots
 ## fileList must have absolute path
 meshf_capturePosteriorSamples <- function(fileList, filterLevel){  
