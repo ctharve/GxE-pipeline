@@ -2,26 +2,28 @@
 
 This repo contains scripts that comprise the Gene Environment Interaction (GxE) pipeline, for alignment & statistical modeling of allelic imbalances in RNA-Seq data across many cellular environments.
 
+=================================================================
 
-
-## I. Align RNA-seq reads and perform QC
+### I. Align RNA-seq reads and perform QC
   1.) start processing from fastq to clean bam
   2.)
-## II. Create pileups & run the QuASAR (EM) pipeline to infer ASE
+### II. Create pileups & run the QuASAR (EM) pipeline to infer ASE
   3.) 
 
-## III. Process QuASAR output and prepare for MESH 
+### III. Process QuASAR output and prepare for MESH 
 
-## IV. Run MESH (MCMC) in parallel, & calculate Bayes Factors & posteriors
+### IV. Run MESH (MCMC) in parallel, & calculate Bayes Factors & posteriors
 
-## V. Process MESH output in preparation for multiclass logistic regression
+### V. Process MESH output in preparation for multiclass logistic regression
 
-### 0.) QuASAR_util_makeLinks.sh || set up QuASAR_results_DP* directory and link to clean pileups
+=================================================================
+
+#### 0.) QuASAR_util_makeLinks.sh || set up QuASAR_results_DP* directory and link to clean pileups
 in:
 out:
 desc:
 
-### 1.) run_all.sh -> QuASAR_pipeline_all.sh -> QuASAR_pipeline.sh -> QuASAR_pipeline.R || run QuASAR
+#### 1.) run_all.sh -> QuASAR_pipeline_all.sh -> QuASAR_pipeline.sh -> QuASAR_pipeline.R || run QuASAR
 inp:
 out: 
 desc:
