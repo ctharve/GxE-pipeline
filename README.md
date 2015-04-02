@@ -43,14 +43,14 @@ This repo contains scripts that comprise the Gene Environment Interaction (GxE) 
     script: td/derived_data/scripts/Alignment_util_makelinks.sh 
     dependencies: fastq files, named by plate number such as DP1_<things here>L1_R1.fastq 
     in: A plate number, such as DP1
-    out: returns nothing
+    out: null
 
 ##### 2.) Align reads, merge barcodes, and perform QC 
-    description:
-    script: td/ Makefile 
-    dependencies:
-    in:
-    out:
+    description: align fastq files, merge barcodes, quality filter, then remove duplicates. Do read counts at each stage of filtering
+    script: td/derived_data/DP1/bams/Makefile 
+    dependencies: the folder ../fastqs with symlinked fastqs.
+    in: null
+    out: clean bam files & .txt files with read counts from each stage of filtering
 
 ##### 3.) Read counts from all stages of filtering
     description:
