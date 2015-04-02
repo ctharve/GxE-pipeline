@@ -1,21 +1,16 @@
 # GxE-pipeline
 
-This repo contains scripts that comprise the Gene by Environment Interaction (GxE) pipeline, for alignment & statistical modeling of allelic imbalances in RNA-Seq data across many cellular environments.
-
-1. Align RNA-seq reads and perform QC
-2. Create pileups & run the QuASAR (EM) pipeline to infer ASE
-3. Process QuASAR output and prepare for MESH 
-4. Run MESH (MCMC) in parallel, & calculate Bayes Factors & posteriors
-5. Process MESH output in preparation for multiclass logistic regression
+This repo contains scripts that comprise the Gene Environment Interaction (GxE) pipeline, for alignment & statistical modeling of allelic imbalances in RNA-Seq data across many cellular environments.
 
 
-I. Align RNA-seq reads and perform QC
+
+# I. Align RNA-seq reads and perform QC
   1.) start processing from fastq to clean bam
   2.)
-II. Create pileups & run the QuASAR (EM) pipeline to infer ASE
+## II. Create pileups & run the QuASAR (EM) pipeline to infer ASE
   3.) 
 
-III. Process QuASAR output and prepare for MESH 
+### III. Process QuASAR output and prepare for MESH 
 
 IV. Run MESH (MCMC) in parallel, & calculate Bayes Factors & posteriors
 
@@ -47,7 +42,7 @@ in:
 out:
 desc:
 
-## 4.) QuASAR_make_master.sh || concatenate all master tables from QuASAR 
+## 4.) QuASAR_make_master.sh || concatenate all master tables from QuASAR (look into Master_table_betas_bfs.R | ./jointGenotyping_0var/data_MESH_allQuAlblfilt/Master_table_betas_bfs.R) 
 in:
 out:
 desc:
