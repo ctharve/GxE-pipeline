@@ -29,57 +29,59 @@ This repo contains scripts that comprise the Gene Environment Interaction (GxE) 
 
 =================================================================
 ##### 0.) QuASAR_util_makeLinks.sh || set up QuASAR_results_DP* directory and link to clean pileups
+    description:
     in:
     out:
-    desc:
 
 ##### 1.) run_all.sh -> QuASAR_pipeline_all.sh -> QuASAR_pipeline.sh -> QuASAR_pipeline.R || run QuASAR
+    description:
     in:
-    out: 
-    desc:
+    out:
 
 ##### 2.) run_all.sh -> add_annotations.sh || add-annotations
+    description:
     in:
     out:
-    desc:
 
 ##### 3.) run_all.sh -> QuASAR_pipeline_masterTable.R || combine data across a plate/cellLine into a master table
+    description:
     in:
     out:
-    desc:
 
 ##### 3.a.) add_annotations.sh 
+    description:
     in:
     out:
-    desc:
 
 ##### 4.) QuASAR_make_master.sh || concatenate all master tables from QuASAR (look into Master_table_betas_bfs.R | ./jointGenotyping_0var/data_MESH_allQuAlblfilt/Master_table_betas_bfs.R) 
+    description:
     in:
     out:
-    desc:
 
 ##### 5.) QuASAR_assignControls.R || find controls and assign them to all treats in the master table
+    description:
     in:
     out:
-    desc:
 
 ##### 6.) QuASAR_MESH_split_logFC.sh || split all data on logFC 
+    description:
     in:
     out:
-    desc:
 
 ##### 7.) MESH_run_all.sh || run MESH on everything
+    description:
     in:
     out:
-    desc:
 
 ##### 8.) master_MESH_outTable.sh || concatonate posterior CIs of configs and pi0	
+    description:
     in:
     out:
-    desc:
+
 
 ##### 9.) Master_table_betas_bfs.sh || concatenate all betas and BFs
+    description:
     in:
     out:
-    desc:
+
 
