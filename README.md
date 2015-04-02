@@ -9,6 +9,7 @@ This repo contains scripts that comprise the Gene Environment Interaction (GxE) 
   3. Read counts from all stages of filtering
   4. Gene counts using DESeq2
   5. Make pileups for QuASAR
+
 ### II. QuASAR (EM) pipeline to infer individual ASE
     6. Create directories, symbolic link to pileups, and distribute scripts for QuASAR
     7. Run the QuASAR pipeline for joint genotyping and inference   
