@@ -52,11 +52,11 @@ This repo contains scripts that comprise the Gene Environment Interaction (GxE) 
     out: clean bam files & .txt files with read counts from each stage of filtering
 
 ##### 3.) Read counts from all stages of filtering
-    description:
-    script: td/ run_all.sh -> td/ add_annotations.sh  
+    description:  from 
+    script: td/derived_data/DP1/counts/QC counts_QC_logs.sh -> counts_QC_logs.R  
     dependencies:
-    in:
-    out:
+    in: A plate number, such as DP1
+    out: DP1_QC_counts.pdf & DP1_QC_counts.txt
 
 ##### 4.) Gene counts using DESeq2
     description:
