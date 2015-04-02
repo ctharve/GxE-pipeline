@@ -28,7 +28,7 @@ This repo contains scripts that comprise the Gene Environment Interaction (GxE) 
 ## VI. Notes
     * Label the top directory as: td=/wsu/home/groups/piquelab/charvey/GxE
     * Scripts that call other scripts are chained together using ->
-=================================================================
+
 ##### 1. Create directories, symbolic link to fastqs, and distribute scripts for alignment
     script: td/derived_data/scripts/Alignment_util_makelinks.sh 
     description: 
