@@ -4,11 +4,11 @@ This repo contains scripts that comprise the Gene Environment Interaction (GxE) 
 
 ## Outline
 ### I. Align RNA-seq reads and perform QC
-    1. Create directories, symbolic link to fastqs, and distribute scripts for alignment
-    2. Align reads, merge barcodes, and perform QC
-    3. Read counts from all stages of filtering
-    4. Gene counts using DESeq2
-    5. Make pileups for QuASAR
+  1. Create directories, symbolic link to fastqs, and distribute scripts for alignment
+  2. Align reads, merge barcodes, and perform QC
+  3. Read counts from all stages of filtering
+  4. Gene counts using DESeq2
+  5. Make pileups for QuASAR
 ### II. QuASAR (EM) pipeline to infer individual ASE
     6. Create directories, symbolic link to pileups, and distribute scripts for QuASAR
     7. Run the QuASAR pipeline for joint genotyping and inference   
