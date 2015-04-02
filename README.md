@@ -16,20 +16,20 @@ This repo contains scripts that comprise the Gene Environment Interaction (GxE) 
   * 8.) Add gene annotations to QuASAR output
 
 ### III. Process QuASAR output and prepare for MESH 
-  9. Combine all QuASAR output into a master table
-  10. Add logFC annotations (Greg's script)
-  11. Create directories and distribute scripts for MESH	
-  12. Split data for MESH and distribute to analysis directory
+  * 9.) Combine all QuASAR output into a master table
+  * 10.) Add logFC annotations (Greg's script)
+  * 11.) Create directories and distribute scripts for MESH	
+  * 12.) Split data for MESH and distribute to analysis directory
 
 ### IV. MESH (MCMC) to infer condition specific ASE
-  13. Run the MESH pipeline
-  14. Calculate posteriors and bayes factors
-  15. Plot condition specific ASE
-  16. Prep data for Multinomial
+  * 13.) Run the MESH pipeline
+  * 14.) Calculate posteriors and bayes factors
+  * 15.) Plot condition specific ASE
+  * 16.) Prep data for Multinomial
 
 ### V. Process MESH output in preparation for multiclass logistic regression
-  17. Run multiclass logistic regression
-  18. Plot regression results
+  * 17.) Run multiclass logistic regression
+  * 18.) Plot regression results
 
 ### VI. Notes
   * Label the top directory as: td=/wsu/home/groups/piquelab/charvey/GxE
