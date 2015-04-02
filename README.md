@@ -21,16 +21,18 @@ This repo contains scripts that comprise the Gene Environment Interaction (GxE) 
     11. Split data for MESH and distribute to analysis directory
 ## IV. MESH (MCMC) to infer condition specific ASE
     9. Run the MESH pipeline
-    10. 
-    11.
+    10. Calculate posteriors and bayes factors
+    11. Plot condition specific ASE
+    12. Prep data for Multinomial
 ## V. Process MESH output in preparation for multiclass logistic regression
-
+    13. Run multiclass logistic regression
+    14. Plot regression results
 =================================================================
 
 #### 0.) QuASAR_util_makeLinks.sh || set up QuASAR_results_DP* directory and link to clean pileups
-in:
-out:
-desc:
+    in:
+    out:
+    desc:
 
 #### 1.) run_all.sh -> QuASAR_pipeline_all.sh -> QuASAR_pipeline.sh -> QuASAR_pipeline.R || run QuASAR
 inp:
