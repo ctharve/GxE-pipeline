@@ -52,28 +52,29 @@ This repo contains scripts that comprise the Gene Environment Interaction (GxE) 
     out: clean bam files & .txt files with read counts from each stage of filtering
 
 ##### 3.) Read counts from all stages of filtering
-    description:  from 
+    description: creates a histogram & table from read counts at each stage of .bam processing
     script: td/derived_data/DP1/counts/QC counts_QC_logs.sh -> counts_QC_logs.R  
-    dependencies:
+    dependencies: 2.) is succesfully completed
     in: A plate number, such as DP1
     out: DP1_QC_counts.pdf & DP1_QC_counts.txt
 
 ##### 4.) Gene counts using DESeq2
-    description:
-    script: td/ run_all.sh -> td/ QuASAR_pipeline_masterTable.R 
-    dependencies:
-    in:
-    out:
+    description: use DESeq2 to measure gene expression, at the transcript level, from processed bams
+    script: td/derived_data/DP1/counts/GC counts_DEG.sh -> counts_DEG.R
+    dependencies: 2.) is succesfully completed
+    in: A plate number, such as DP1
+    out: DP1.data.gz & DP1.data.Rd
 
 ##### 5.) Make pileups for QuASAR
-    description: 
-    script: 
-    in:
-    out:
+    description: make pileup/bed files from each clean bam file
+    script: td/derived_data/DP1/pileups/Makefile1
+    dependencies: 2.) is succesfully completed
+    in: null
+    out: clean DP1*.pileup.clean.bed.gz files 
 
 ##### 6.) Create directories, symbolic link to pileups, and distribute scripts for QuASAR
     description: 
-    script: 
+    script: td/jointGenotyping/scripts/QuASAR_util_makeLinks.sh
     dependencies:
     in:
     out:
