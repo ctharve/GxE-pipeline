@@ -32,11 +32,11 @@ This repo contains scripts that comprise the Gene Environment Interaction (GxE) 
 
 ## Details
 ##### 1. Create directories, symbolic link to fastqs, and distribute scripts for alignment
-    description: 
+    description: After reads have been aligned for a specific plate, this script symlinks
     script: td/derived_data/scripts/Alignment_util_makelinks.sh 
-    dependencies:
-    in:
-    out:
+    dependencies: fastq files, named by plate number such as DP2_<things here>L2_R1.fastq 
+    in: A plate number, such as DP2
+    out: returns nothing
 
 ##### 2. Align reads, merge barcodes, and perform QC 
     description:
