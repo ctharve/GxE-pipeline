@@ -11,9 +11,9 @@ This repo contains scripts that comprise the Gene Environment Interaction (GxE) 
   5. Make pileups for QuASAR
 
 ### II. QuASAR (EM) pipeline to infer individual ASE
-  6. Create directories, symbolic link to pileups, and distribute scripts for QuASAR
-  7. Run the QuASAR pipeline for joint genotyping and inference   
-  8. Add gene annotations to QuASAR output
+6. Create directories, symbolic link to pileups, and distribute scripts for QuASAR
+7. Run the QuASAR pipeline for joint genotyping and inference   
+8. Add gene annotations to QuASAR output
 
 ### III. Process QuASAR output and prepare for MESH 
   9. Combine all QuASAR output into a master table
