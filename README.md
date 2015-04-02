@@ -1,5 +1,4 @@
 # GxE-pipeline
-
 This repo contains scripts that comprise the Gene Environment Interaction (GxE) pipeline, for alignment & statistical modeling of allelic imbalances in RNA-Seq data across many cellular environments.
 
 ## Outline
@@ -31,7 +30,7 @@ This repo contains scripts that comprise the Gene Environment Interaction (GxE) 
   * 17.) Run multiclass logistic regression
   * 18.) Plot regression results
 
-### VI. Notes
+## Notes
   * Label the top directory as: td=/wsu/home/groups/piquelab/charvey/GxE
   * Scripts that call other scripts are chained together using ->
   * I is performed per plate, so we will use DP1 as an example. All other plates can be processed similarly by replacing DP1 with the desired plate.
