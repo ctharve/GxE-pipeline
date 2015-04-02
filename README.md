@@ -2,6 +2,7 @@
 
 This repo contains scripts that comprise the Gene Environment Interaction (GxE) pipeline, for alignment & statistical modeling of allelic imbalances in RNA-Seq data across many cellular environments.
 
+# Outline
 ## I. Align RNA-seq reads and perform QC
     1. Create directories, symbolic link to fastqs, and distribute scripts for alignment
     2. Align reads, merge barcodes, and perform QC
@@ -29,6 +30,7 @@ This repo contains scripts that comprise the Gene Environment Interaction (GxE) 
     * Label the top directory as: td=/wsu/home/groups/piquelab/charvey/GxE
     * Scripts that call other scripts are chained together using ->
 
+# Detailed outline
 ##### 1. Create directories, symbolic link to fastqs, and distribute scripts for alignment
     script: td/derived_data/scripts/Alignment_util_makelinks.sh 
     description: 
