@@ -4,16 +4,16 @@ This repo contains scripts that comprise the Gene Environment Interaction (GxE) 
 
 ## Outline
 ### I. Align RNA-seq reads and perform QC
-  * 1. Create directories, symbolic link to fastqs, and distribute scripts for alignment
-  * 2. Align reads, merge barcodes, and perform QC
-  * 3. Read counts from all stages of filtering
-  * 4. Gene counts using DESeq2
-  * 5. Make pileups for QuASAR
+  * 1.) Create directories, symbolic link to fastqs, and distribute scripts for alignment
+  * 2.) Align reads, merge barcodes, and perform QC
+  * 3.) Read counts from all stages of filtering
+  * 4.) Gene counts using DESeq2
+  * 5.) Make pileups for QuASAR
 
 ### II. QuASAR (EM) pipeline to infer individual ASE
-  * 6. Create directories, symbolic link to pileups, and distribute scripts for QuASAR
-  * 7. Run the QuASAR pipeline for joint genotyping and inference   
-  * 8. Add gene annotations to QuASAR output
+  * 6.) Create directories, symbolic link to pileups, and distribute scripts for QuASAR
+  * 7.) Run the QuASAR pipeline for joint genotyping and inference   
+  * 8.) Add gene annotations to QuASAR output
 
 ### III. Process QuASAR output and prepare for MESH 
   9. Combine all QuASAR output into a master table
@@ -36,7 +36,7 @@ This repo contains scripts that comprise the Gene Environment Interaction (GxE) 
   * Scripts that call other scripts are chained together using ->
 
 ## Details
-##### 1. Create directories, symbolic link to fastqs, and distribute scripts for alignment
+##### 1.) Create directories, symbolic link to fastqs, and distribute scripts for alignment
     description: create directory structure for read alignment, copy alignment/QC scripts
                  into relevant directories, & symlink to relevant .fastqs.
     script: td/derived_data/scripts/Alignment_util_makelinks.sh 
@@ -44,48 +44,48 @@ This repo contains scripts that comprise the Gene Environment Interaction (GxE) 
     in: A plate number, such as DP2
     out: returns nothing
 
-##### 2. Align reads, merge barcodes, and perform QC 
+##### 2.) Align reads, merge barcodes, and perform QC 
     description:
     script:  
     dependencies:
     in:
     out:
 
-##### 3. Read counts from all stages of filtering
+##### 3.) Read counts from all stages of filtering
     description:
     script: td/ run_all.sh -> td/ add_annotations.sh  
     dependencies:
     in:
     out:
 
-##### 4. Gene counts using DESeq2
+##### 4.) Gene counts using DESeq2
     description:
     script: td/ run_all.sh -> td/ QuASAR_pipeline_masterTable.R 
     dependencies:
     in:
     out:
 
-##### 5. Make pileups for QuASAR
+##### 5.) Make pileups for QuASAR
     description: 
     script: 
     in:
     out:
 
-##### 6. Create directories, symbolic link to pileups, and distribute scripts for QuASAR
+##### 6.) Create directories, symbolic link to pileups, and distribute scripts for QuASAR
     description: 
     script: 
     dependencies:
     in:
     out:
 
-##### 7. Run the QuASAR pipeline for joint genotyping and inference
+##### 7.) Run the QuASAR pipeline for joint genotyping and inference
     description: 
     script: td/ run_all.sh -> td/ QuASAR_pipeline_all.sh -> td/ QuASAR_pipeline.sh -> td/ QuASAR_pipeline.R
     dependencies:
     in:
     out:
 
-##### 8. Add gene annotations to QuASAR output
+##### 8.) Add gene annotations to QuASAR output
     description: 
     script: td/ add_annotations.sh 
     dependencies:
