@@ -5,8 +5,8 @@ This repo contains scripts that comprise the Gene Environment Interaction (GxE) 
 =================================================================
 
 ### I. Align RNA-seq reads and perform QC
-  1.) align reads, merge barcodes, and perform QC
-  2.) read counts from all stages of filtering
+1.) align reads, merge barcodes, and perform QC
+2.) read counts from all stages of filtering
   3.) gene counts using DESeq2
   4.) make pileups for QuASAR
 ### II. QuASAR (EM) pipeline to infer individual ASE
