@@ -26,11 +26,12 @@ This repo contains scripts that comprise the Gene Environment Interaction (GxE) 
 ## V. Process MESH output in preparation for multiclass logistic regression
     13. Run multiclass logistic regression
     14. Plot regression results
-## VI. notes
-    * topdir=/wsu/home/groups/piquelab/charvey/GxE
+## VI. Notes
+    * *topdir=/wsu/home/groups/piquelab/charvey/GxE*
 =================================================================
-##### 0.) Alignment_util_makelinks.sh || set up QuASAR_results_DP* directory and link to clean pileups
-    script: 
+##### 0.) Create directories, symbolic link to fastqs, and distribute scripts for alignment
+ || set up QuASAR_results_DP* directory and link to clean pileups
+    script: *topdir/derived_data/scripts/Alignment_util_makelinks.sh* 
     description: 
     dependencies:
     in:
