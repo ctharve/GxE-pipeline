@@ -5,15 +5,20 @@ This repo contains scripts that comprise the Gene Environment Interaction (GxE) 
 =================================================================
 
 ### I. Align RNA-seq reads and perform QC
-  1.) start processing from fastq to clean bam
-  2.)
-### II. Create pileups & run the QuASAR (EM) pipeline to infer ASE
-  3.) 
-
+  1.) align reads, merge barcodes, and perform QC
+  2.) read counts from all stages of filtering
+  3.) gene counts using DESeq2
+  4.) make pileups for QuASAR
+### II. QuASAR (EM) pipeline to infer individual ASE
+  5.)   
+  6.) 
 ### III. Process QuASAR output and prepare for MESH 
-
-### IV. Run MESH (MCMC) in parallel, & calculate Bayes Factors & posteriors
-
+  7.)
+  8.)
+### IV. MESH (MCMC) to infer condition specific ASE
+  9.)
+  10.)
+  11.)
 ### V. Process MESH output in preparation for multiclass logistic regression
 
 =================================================================
