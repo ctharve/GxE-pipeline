@@ -28,6 +28,7 @@ This repo contains scripts that comprise the Gene Environment Interaction (GxE) 
     14. Plot regression results
 ## VI. Notes
     * topdir=/wsu/home/groups/piquelab/charvey/GxE
+    * hello
 =================================================================
 ##### 0.) Create directories, symbolic link to fastqs, and distribute scripts for alignment
     script: topdir/derived_data/scripts/Alignment_util_makelinks.sh 
