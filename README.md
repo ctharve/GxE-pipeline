@@ -81,18 +81,18 @@ This repo contains scripts that comprise the Gene Environment Interaction (GxE) 
     out: null
 
 ##### 7.) Run the QuASAR pipeline for joint genotyping and inference
-    description:  
-    script: td/jointGenotyping/QuASAR_results_DP1/ QuASAR_pipeline_all.sh QuASAR_pipeline.R
+    description: a full QuASAR analysis for each plate/cellLine
+    script: td/jointGenotyping/QuASAR_results_DP1/ QuASAR_pipeline_all.sh ->  QuASAR_pipeline.R
     dependencies: 6.) is succesfully completed & a properly formatted covariate file in td/derived_data/covariates 
     in: A plate number, such as DP1, & the name to the analysis script, QuASAR_pipeline.R
-    out: 
+    out: QuASAR output for each plate:cellLine:treatment, plate:cellLine, QQ plots, and manhattan plots
 
 ##### 8.) Add gene annotations to QuASAR output
-    description: 
-    script: td/ add_annotations.sh 
-    dependencies:
-    in:
-    out:
+    description: add annotations of each gene to every heterozygote SNP identified with QuASAR
+    script: td/jointGenotyping/QuASAR_results_DP1/output/add_annotations.sh 
+    dependencies: 7.) is succesfully completed
+    in: null
+    out: QuASAR output tables with gene name annotation on each SNP
 
 ##### 9. Combine all QuASAR output into a master table
     description: 
