@@ -27,7 +27,6 @@ out:
 desc:
 
 ### 2.) run_all.sh -> add_annotations.sh || add-annotations
-:w
 in:
 out:
 desc:
