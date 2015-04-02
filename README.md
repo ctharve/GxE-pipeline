@@ -28,60 +28,80 @@ This repo contains scripts that comprise the Gene Environment Interaction (GxE) 
     14. Plot regression results
 
 =================================================================
-##### 0.) QuASAR_util_makeLinks.sh || set up QuASAR_results_DP* directory and link to clean pileups
-    description:
+##### 0.) Alignment_util_makelinks.sh || set up QuASAR_results_DP* directory and link to clean pileups
+    script: 
+    description: 
+    dependencies:
     in:
     out:
 
 ##### 1.) run_all.sh -> QuASAR_pipeline_all.sh -> QuASAR_pipeline.sh -> QuASAR_pipeline.R || run QuASAR
-    description:
+    script: 
+    description: 
+    dependencies:
     in:
     out:
 
 ##### 2.) run_all.sh -> add_annotations.sh || add-annotations
-    description:
+    script: 
+    description: 
+    dependencies:
     in:
     out:
 
 ##### 3.) run_all.sh -> QuASAR_pipeline_masterTable.R || combine data across a plate/cellLine into a master table
-    description:
+    script: 
+    description: 
+    dependencies:
     in:
     out:
 
 ##### 3.a.) add_annotations.sh 
-    description:
+    script: 
+    description: 
+    dependencies:
     in:
     out:
 
 ##### 4.) QuASAR_make_master.sh || concatenate all master tables from QuASAR (look into Master_table_betas_bfs.R | ./jointGenotyping_0var/data_MESH_allQuAlblfilt/Master_table_betas_bfs.R) 
-    description:
+    script: 
+    description: 
+    dependencies:
     in:
     out:
 
 ##### 5.) QuASAR_assignControls.R || find controls and assign them to all treats in the master table
-    description:
+    script: 
+    description: 
+    dependencies:
     in:
     out:
 
 ##### 6.) QuASAR_MESH_split_logFC.sh || split all data on logFC 
-    description:
+    script: 
+    description: 
+    dependencies:
     in:
     out:
 
 ##### 7.) MESH_run_all.sh || run MESH on everything
-    description:
+    script: 
+    description: 
+    dependencies:
     in:
     out:
 
 ##### 8.) master_MESH_outTable.sh || concatonate posterior CIs of configs and pi0	
-    description:
+    script: 
+    description: 
+    dependencies:
     in:
     out:
 
 
 ##### 9.) Master_table_betas_bfs.sh || concatenate all betas and BFs
-    description:
+    script: 
+    description: 
+    dependencies:
     in:
     out:
-
-
