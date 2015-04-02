@@ -2,7 +2,6 @@
 
 This repo contains scripts that comprise the Gene Environment Interaction (GxE) pipeline, for alignment & statistical modeling of allelic imbalances in RNA-Seq data across many cellular environments.
 
-=================================================================
 ## I. Align RNA-seq reads and perform QC
     1. Create directories, symbolic link to fastqs, and distribute scripts for alignment
     2. Align reads, merge barcodes, and perform QC
