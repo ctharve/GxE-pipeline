@@ -73,18 +73,19 @@ This repo contains scripts that comprise the Gene Environment Interaction (GxE) 
     out: clean DP1*.pileup.clean.bed.gz files 
 
 ##### 6.) Create directories, symbolic link to pileups, and distribute scripts for QuASAR
-    description: 
+    description: create directory structure for QuASAR pipeline, copy QuASAR/MESH scripts
+                 into relevant directories, & symlink to relevant *.clean.bed.gz files.
     script: td/jointGenotyping/scripts/QuASAR_util_makeLinks.sh
-    dependencies:
-    in:
-    out:
+    dependencies: 5.) is succesfully completed
+    in: A plate number, such as DP1
+    out: null
 
 ##### 7.) Run the QuASAR pipeline for joint genotyping and inference
-    description: 
-    script: td/ run_all.sh -> td/ QuASAR_pipeline_all.sh -> td/ QuASAR_pipeline.sh -> td/ QuASAR_pipeline.R
-    dependencies:
-    in:
-    out:
+    description:  
+    script: td/jointGenotyping/QuASAR_results_DP1/ QuASAR_pipeline_all.sh QuASAR_pipeline.R
+    dependencies: 6.) is succesfully completed & a properly formatted covariate file in td/derived_data/covariates 
+    in: A plate number, such as DP1, & the name to the analysis script, QuASAR_pipeline.R
+    out: 
 
 ##### 8.) Add gene annotations to QuASAR output
     description: 
